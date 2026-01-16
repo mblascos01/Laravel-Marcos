@@ -21,4 +21,16 @@
             <p class="text-gray-500">No chirps yet. Be the first to chirp!</p>
         @endforelse
     </div>
+
+    @can('update', $bulo)
+    <div class="flex gap-1">
+        <a href="/bulos/{{ $bulo->id }}/edit">Editar</a>
+        
+        <form method="POST" action="/bulos/{{ $bulo->id }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Eliminar</button>
+        </form>
+    </div>
+@endcan
 </x-layout>

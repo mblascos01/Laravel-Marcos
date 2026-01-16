@@ -38,6 +38,14 @@
                     class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow mx-auto block">
                 Chirp
             </button>
+            
+            <button class="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow mx-auto block">
+                Editar
+            </button>
+            <button class="mt-4 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded shadow mx-auto block">
+                Eliminar
+            </button>
+            
 
         </div>
 

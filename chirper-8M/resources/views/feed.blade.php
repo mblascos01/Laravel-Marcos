@@ -3,6 +3,58 @@
         Home Feed
     </x-slot:title>
 
+    <div class="card bg-base-100 shadow mt-8" style="max-width: 600px; margin: auto;">
+    <div class="card-body">
+        <form method="POST" action="/bulos">
+            @csrf
+            <div class="form-control w-full mb-2">
+                <textarea
+                    name="texto"
+                    placeholder="Escribe el texto del bulo..."
+                    class="textarea textarea-bordered w-full resize-none"
+                    rows="3"
+                    maxlength="255"
+                    required
+                >{{ old('texto') }}</textarea>
+                @error('texto')
+                    <div class="label">
+                        <span class="label-text-alt text-error">{{ $message }}</span>
+                    </div>
+                @enderror
+            </div>
+            <div class="form-control w-full mb-2">
+                <textarea
+                    name="texto_desmentido"
+                    placeholder="Escribe la explicación/desmentido..."
+                    class="textarea textarea-bordered w-full resize-none"
+                    rows="3"
+                    maxlength="255"
+                    required
+                >{{ old('texto_desmentido') }}</textarea>
+                @error('texto_desmentido')
+                    <div class="label">
+                        <span class="label-text-alt text-error">{{ $message }}</span>
+                    </div>
+                @enderror
+            </div>
+            <div class="mt-4 flex items-center justify-end">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    Publicar Bulo
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (session('exito'))
+    <div class="toast toast-top toast-center">
+        <div class="alert alert-success animate-fade-out">
+            <span>{{ session('exito') }}</span>
+        </div>
+    </div>
+@endif
+
+
     <div class="max-w-4xl mx-auto px-4">
         <h1 class="text-3xl font-bold mt-8">Últimos Bulos</h1>
 
