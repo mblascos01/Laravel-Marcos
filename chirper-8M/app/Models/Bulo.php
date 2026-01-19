@@ -9,7 +9,8 @@ class Bulo extends Model
 {
     protected $fillable = [
         'texto',
-        'texto_desmentido'
+        'texto_desmentido',
+        'user_id'
     ];
 
     public function user(): BelongsTo

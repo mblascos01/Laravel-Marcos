@@ -5,39 +5,29 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class Login extends Controller
 {
-    /**
-     * Show the login form.
-     */
-    public function show(): View
+    public function __invoke(Request $request)
     {
-        return view('auth.login');
-    }
-
-    /**
-     * Handle the incoming login request.
-     */
-    public function __invoke(Request $request): RedirectResponse
-    {
-        // Validar datos
-        $validated = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+        // Validar los campos
+        $credenciales = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        // Intentar autenticarse
-        if (Auth::attempt($validated, $request->boolean('remember'))) {
+        // Intento de inicio de sesion
+        if (Auth::attempt($credenciales, $request->boolean('recordarme'))) {
+            // Regenerar la sesion para evitar fijacion de sesion
             $request->session()->regenerate();
-            return redirect('/')->with('success', '¡Bienvenido/a de vuelta!');
+
+            // Redirigir a la pagina deseada o al inicio
+            return redirect()->intended('/')->with('success', '¡Bienvenido de nuevo!');
         }
 
-        // Si la autenticación falla
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email');
+        // Si el inicio de sesion falla, redirigir de vuelta con error
+        return back()
+            ->withErrors(['email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.'])
+            ->onlyInput('email');
     }
 }

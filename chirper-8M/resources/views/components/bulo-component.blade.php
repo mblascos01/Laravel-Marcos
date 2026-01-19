@@ -33,19 +33,30 @@
                 <p class="text-gray-800 text-xl font-semibold text-center">{{ $bulo->texto }}</p>
             </div>
 
-            {{-- Botón Chirp --}}
-            <button @click.stop="flipped = true"
-                    class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow mx-auto block">
-                Chirp
-            </button>
-            
-            <button class="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow mx-auto block">
-                Editar
-            </button>
-            <button class="mt-4 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded shadow mx-auto block">
-                Eliminar
-            </button>
-            
+            {{-- Botones de acción --}}
+            <div class="mt-4 space-y-2">
+                <button @click.stop="flipped = true"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors">
+                    Ver Desmentido
+                </button>
+                
+                @can('update', $bulo)
+                    <a href="{{ route('bulos.edit', $bulo) }}"
+                       class="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow text-center transition-colors">
+                        Editar
+                    </a>
+                    
+                    <form method="POST" action="{{ route('bulos.destroy', $bulo) }}" class="inline-block w-full"
+                          onsubmit="return confirm('¿Estás seguro de que quieres eliminar este bulo?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors">
+                            Eliminar
+                        </button>
+                    </form>
+                @endcan
+            </div>
 
         </div>
 

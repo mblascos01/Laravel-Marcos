@@ -36,23 +36,20 @@ class ControladorController extends Controller
     }
 
     public function guardar(Request $request)
-{
-    $validados = $request->validate([
-        'texto' => 'required|string|max:255',
-        'texto_desmentido' => 'required|string|max:255',
-    ], [
-        'texto.required' => 'El texto del bulo es obligatorio.',
-        'texto.max' => 'El texto del bulo debe tener 255 caracteres o menos.',
-        'texto_desmentido.required' => 'La explicación/desmentido es obligatoria.',
-        'texto_desmentido.max' => 'La explicación debe tener 255 caracteres o menos.',
-    ]);
+    {
+        $validados = $request->validate([
+            'texto' => 'required|string|max:255',
+            'texto_desmentido' => 'required|string|max:255',
+        ], [
+            'texto.required' => 'El texto del bulo es obligatorio.',
+            'texto.max' => 'El texto del bulo debe tener 255 caracteres o menos.',
+            'texto_desmentido.required' => 'La explicación/desmentido es obligatoria.',
+            'texto_desmentido.max' => 'La explicación debe tener 255 caracteres o menos.',
+        ]);
 
-    \App\Models\Bulo::create([
-        'texto' => $validados['texto'],
-        'texto_desmentido' => $validados['texto_desmentido'],
-        'user_id' => null, // Se añadirá autenticación más adelante
-    ]);
+        // Crea el bulo asociado al usuario autenticado para que pase las políticas de borrado
+        $request->user()->bulos()->create($validados);
 
-    return redirect('/')->with('exito', '¡Bulo publicado correctamente!');
-}
+        return redirect('/')->with('exito', '¡Bulo publicado correctamente!');
+    }
 }

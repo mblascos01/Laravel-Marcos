@@ -7,44 +7,30 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class Register extends Controller
 {
-    /**
-     * Show the registration form.
-     */
-    public function show(): View
+    public function __invoke(Request $request)
     {
-        return view('auth.register');
-    }
-
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request): RedirectResponse
-    {
-
-        // Validar datos
+        // Validate the input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Crear usuario
+        // Create the user
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
-        // Iniciar sesión automáticamente
+        // Log them in
         Auth::login($user);
 
-        // Redirigir
-        return redirect('/')->with('success', '¡Bienvenido/a a 8M-Chirper!');
-        
+        // Redirect to home
+        return redirect('/')->with('success', 'Welcome to Chirper!');
     }
 }
+
